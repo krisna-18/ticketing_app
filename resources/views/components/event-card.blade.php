@@ -44,7 +44,7 @@
           </p>
 
           <p class="text-sm">
-              📍 {{ $location }}
+               {{ $location }}
           </p>
 
           <p class="font-bold text-lg mt-2">

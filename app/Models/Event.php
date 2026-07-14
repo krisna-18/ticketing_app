@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Event extends Model
 {
@@ -82,7 +85,7 @@ class Event extends Model
     public function getImageUrlAttribute(): string
     {
         $gambar = $this->gambar;
-        if (!$gambar && filter_var($gambar, FILTER_VALIDATE_URL)) {
+        if ($gambar && filter_var($gambar, FILTER_VALIDATE_URL)) {
             return $gambar;
         }
         if ($gambar && Storage::disk('public')->exists($gambar)) {
