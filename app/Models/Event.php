@@ -48,7 +48,7 @@ class Event extends Model
             return 'Tanggal tidak tersedia';
         }
         $start = Carbon::parse($this->tanggal_waktu);
-        $end = $start->copy()->addHours(3); 
+        $end = $start->copy()->addHours(3);
         $now = Carbon::now();
 
         if ($now->lt($start)) {
@@ -72,7 +72,7 @@ class Event extends Model
     public function scopeOngoing(Builder $query): Builder
     {
         return $query->where('tanggal_waktu', '<=', now())
-                     ->where('tanggal_waktu', '>=', now()->subHours(3));
+            ->where('tanggal_waktu', '>=', now()->subHours(3));
     }
     public function scopeCompleted(Builder $query): Builder
     {

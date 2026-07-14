@@ -23,6 +23,16 @@ Route::prefix('admin')->name('categories.')->middleware(['auth', 'verified'])->g
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('destroy');
 });
 
+// Event management routes (admin)
+Route::prefix('admin')->name('admin.events.')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/events', [EventController::class, 'index'])->name('index');
+    Route::get('/events/create', [EventController::class, 'create'])->name('create');
+    Route::post('/events', [EventController::class, 'store'])->name('store');
+    Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('edit');
+    Route::put('/events/{event}', [EventController::class, 'update'])->name('update');
+    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('destroy');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
