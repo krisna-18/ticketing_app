@@ -24,6 +24,12 @@
             </div>
         @endif
 
+        @if (session('warning'))
+            <div class="alert alert-warning mb-4">
+                <span>{{ session('warning') }}</span>
+            </div>
+        @endif
+
         <!-- Filter Form -->
         <div class="bg-white rounded-box shadow-xs p-5 mb-6">
             <form method="GET" action="{{ route('admin.events.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
@@ -69,9 +75,21 @@
 
         <!-- Events Table -->
         <div class="overflow-x-auto rounded-box bg-white p-5 shadow-xs">
+            <form id="bulkDeleteForm" method="POST" action="{{ route('admin.events.bulkDestroy') }}">
+                @csrf
+                <div class="mb-4">
+                    <button type="submit" class="btn btn-error btn-sm text-white" id="btnHapusTerpilih" disabled>
+                        Hapus Terpilih
+                    </button>
+                </div>
             <table class="table">
                 <thead>
                     <tr>
+                        <th>
+                            <label>
+                                <input type="checkbox" id="selectAllCheckbox" class="checkbox checkbox-sm" />
+                            </label>
+                        </th>
                         <th>Gambar</th>
                         <th>Judul</th>
                         <th>Kategori</th>
@@ -84,6 +102,11 @@
                 <tbody>
                     @forelse ($events as $event)
                         <tr>
+                            <td>
+                                <label>
+                                    <input type="checkbox" name="ids[]" value="{{ $event->id }}" class="checkbox checkbox-sm event-checkbox" />
+                                </label>
+                            </td>
                             <td>
                                 <img src="{{ $event->image_url }}" alt="{{ $event->judul }}"
                                      class="w-16 h-16 object-cover rounded-lg">
@@ -125,13 +148,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-8 text-gray-500">
+                            <td colspan="8" class="text-center py-8 text-gray-500">
                                 Tidak ada event yang ditemukan.
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+            </form>
         </div>
 
         <div class="mt-6">
@@ -157,6 +181,44 @@
     </dialog>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const eventCheckboxes = document.querySelectorAll('.event-checkbox');
+            const btnHapusTerpilih = document.getElementById('btnHapusTerpilih');
+            const bulkDeleteForm = document.getElementById('bulkDeleteForm');
+
+            function updateDeleteButtonState() {
+                const checkedCount = document.querySelectorAll('.event-checkbox:checked').length;
+                btnHapusTerpilih.disabled = checkedCount === 0;
+            }
+
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function () {
+                    eventCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                    updateDeleteButtonState();
+                });
+            }
+
+            eventCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const allChecked = document.querySelectorAll('.event-checkbox:checked').length === eventCheckboxes.length;
+                    selectAllCheckbox.checked = allChecked && eventCheckboxes.length > 0;
+                    updateDeleteButtonState();
+                });
+            });
+
+            if (bulkDeleteForm) {
+                bulkDeleteForm.addEventListener('submit', function (e) {
+                    const checkedCount = document.querySelectorAll('.event-checkbox:checked').length;
+                    if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedCount} event yang dipilih?`)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+
         function openDeleteModal(button) {
             const id = button.dataset.id;
             const judul = button.dataset.judul;

@@ -205,6 +205,42 @@ class EventController extends Controller
     }
 
     /**
+     * Remove multiple events.
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return back()->with('error', 'Tidak ada event yang dipilih.');
+        }
+
+        $events = Event::whereIn('id', $ids)->get();
+        $deletedCount = 0;
+        $failedCount = 0;
+
+        foreach ($events as $event) {
+            if ($event->hasSales()) {
+                $failedCount++;
+                continue;
+            }
+
+            if ($event->gambar && $event->gambar !== 'konser.jpg' && Storage::disk('public')->exists($event->gambar)) {
+                Storage::disk('public')->delete($event->gambar);
+            }
+
+            $event->delete();
+            $deletedCount++;
+        }
+
+        if ($failedCount > 0) {
+            return back()->with('warning', "Berhasil menghapus {$deletedCount} event. {$failedCount} event gagal dihapus karena sudah memiliki penjualan tiket.");
+        }
+
+        return back()->with('success', "Berhasil menghapus {$deletedCount} event!");
+    }
+
+    /**
      * Display the specified event.
      */
     public function show(Event $event)

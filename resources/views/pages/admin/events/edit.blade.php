@@ -146,16 +146,18 @@
         let ticketIndex = 0;
         const ticketsContainer = document.getElementById('ticketsContainer');
 
-        // Data tiket yang sudah ada, dikirim dari server
-        const existingTickets = @json($event->tikets->map(function ($tiket) {
-            return [
-                'id' => $tiket->id,
-                'tipe' => $tiket->tipe,
-                'harga' => (float) $tiket->harga,
-                'stok' => $tiket->stok,
-                'sold' => $tiket->detailOrders()->exists(),
-            ];
-        }));
+        @php
+            $formattedTickets = $event->tikets->map(function ($tiket) {
+                return [
+                    'id' => $tiket->id,
+                    'tipe' => $tiket->tipe,
+                    'harga' => (float) $tiket->harga,
+                    'stok' => $tiket->stok,
+                    'sold' => $tiket->detailOrders()->exists(),
+                ];
+            });
+        @endphp
+        const existingTickets = @json($formattedTickets);
 
         function renderTicketCard(index, data = {}) {
             const wrapper = document.createElement('div');
