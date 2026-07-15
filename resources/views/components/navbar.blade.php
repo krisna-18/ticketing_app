@@ -62,11 +62,14 @@
           </a>
         </li>
         <li>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf <button type="submit" class="w-full text-left">Logout</button>
-          </form>
+          <a href="#" onclick="event.preventDefault(); document.getElementById('navbar-logout-form').submit();">
+            Logout
+          </a>
         </li>
       </ul>
+      <form id="navbar-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+          @csrf
+      </form>
     </div>
     @endauth
   </div>
