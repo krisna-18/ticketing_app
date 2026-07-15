@@ -12,7 +12,7 @@
 <body class="bg-gray-50">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg">
+        <aside class="w-64 bg-white shadow-lg fixed top-0 left-0 h-screen overflow-y-auto">
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Admin Panel</h2>
 
@@ -75,7 +75,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col ml-64">
             <!-- Top Header -->
             <header class="bg-white shadow-sm border-b">
                 <div class="px-6 py-4">
