@@ -51,9 +51,11 @@
         tabindex="0"
         class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
+        @if(Auth::user()->role === 'admin')
 	      <li>
           <a href="{{ route('dashboard') }}">Dashboard</a>
         </li>
+        @endif
         <li>
           <a href="{{ route('profile.edit') }}" class="justify-between">
             Profile <span class="badge">{{ Auth::user()->name }}</span>

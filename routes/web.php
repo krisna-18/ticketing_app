@@ -13,10 +13,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Event routes
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
 // Category routes (admin)
-Route::prefix('admin')->name('categories.')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('admin')->name('categories.')->middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/categories', [DashboardController::class, 'index'])->name('index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('store');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('update');
@@ -24,7 +24,7 @@ Route::prefix('admin')->name('categories.')->middleware(['auth', 'verified'])->g
 });
 
 // Event management routes (admin)
-Route::prefix('admin')->name('admin.events.')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('admin')->name('admin.events.')->middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/events', [EventController::class, 'index'])->name('index');
     Route::post('/events/bulk-delete', [EventController::class, 'bulkDestroy'])->name('bulkDestroy');
     Route::get('/events/create', [EventController::class, 'create'])->name('create');
