@@ -151,7 +151,7 @@
                                 <span class="text-sm font-medium">Harga (Rp)</span>
                                 <span class="text-error">*</span>
                             </label>
-                            <input type="number" name="tikets[${index}][harga]" min="0" step="1000"
+                            <input type="number" name="tikets[${index}][harga]" min="0" step="1"
                                    value="${data.harga ?? ''}" class="input input-bordered input-sm w-full" required>
                         </div>
                         <div class="space-y-1">

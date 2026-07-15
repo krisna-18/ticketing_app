@@ -85,6 +85,31 @@
                             <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">
                                 ← Kembali ke Home
                             </a>
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                        {{ auth()->user()->name[0] ?? 'A' }}
+                                    </div>
+                                </div>
+                                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                                    <li>
+                                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('profile.edit') }}" class="justify-between">
+                                            Profile <span class="badge">{{ Auth::user()->name }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('header-logout-form').submit();">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                                <form id="header-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+                                    @csrf
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

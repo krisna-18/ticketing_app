@@ -139,7 +139,7 @@
                                     <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-primary">
                                         Edit
                                     </a>
-                                    <button class="btn btn-sm bg-red-500 text-white" onclick="openDeleteModal(this)"
+                                    <button type="button" class="btn btn-sm bg-red-500 text-white" onclick="openDeleteModal(this)"
                                             data-id="{{ $event->id }}" data-judul="{{ $event->judul }}">
                                         Hapus
                                     </button>
