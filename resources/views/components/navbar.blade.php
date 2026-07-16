@@ -51,20 +51,25 @@
         tabindex="0"
         class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
+        @if(Auth::user()->role === 'admin')
 	      <li>
           <a href="{{ route('dashboard') }}">Dashboard</a>
         </li>
+        @endif
         <li>
           <a href="{{ route('profile.edit') }}" class="justify-between">
             Profile <span class="badge">{{ Auth::user()->name }}</span>
           </a>
         </li>
         <li>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf <button type="submit" class="w-full text-left">Logout</button>
-          </form>
+          <a href="#" onclick="event.preventDefault(); document.getElementById('navbar-logout-form').submit();">
+            Logout
+          </a>
         </li>
       </ul>
+      <form id="navbar-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+          @csrf
+      </form>
     </div>
     @endauth
   </div>

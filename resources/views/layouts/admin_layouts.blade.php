@@ -12,7 +12,7 @@
 <body class="bg-gray-50">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg">
+        <aside class="w-64 bg-white shadow-lg fixed top-0 left-0 h-screen overflow-y-auto">
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Admin Panel</h2>
 
@@ -36,6 +36,16 @@
                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" />
                             </svg>
                             Manajemen Kategori
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('admin.events.index') }}"
+                           class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.events.*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="w-5 h-5 mr-3">
+                                <path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20zm0-2h16V6H4zm2-2h4v-4H6zm6 0h6v-1.5h-6zm0-3h6v-1.5h-6zM6 11h4V8H6zM4 18V6z" />
+                            </svg>
+                            Manajemen Event
                         </a>
                     </li>
                 </ul>
@@ -65,7 +75,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col ml-64">
             <!-- Top Header -->
             <header class="bg-white shadow-sm border-b">
                 <div class="px-6 py-4">
@@ -75,6 +85,31 @@
                             <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">
                                 ← Kembali ke Home
                             </a>
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                        {{ auth()->user()->name[0] ?? 'A' }}
+                                    </div>
+                                </div>
+                                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                                    <li>
+                                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('profile.edit') }}" class="justify-between">
+                                            Profile <span class="badge">{{ Auth::user()->name }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('header-logout-form').submit();">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                                <form id="header-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+                                    @csrf
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
